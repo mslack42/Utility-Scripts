@@ -13,10 +13,9 @@ import pyautogui
 
 key = ''
 command = ''
-fastTravelData = 'C:\\Users\\Michael\\Documents\\GitHub\\FastTravel\\fastTravel.csv'
 
 def announceArgFailure():
-    # print('Invalid arguments supplied - are you sure you\'ve unlocked HM02 Fly yet?')
+    print('Invalid arguments supplied - are you sure you\'ve unlocked HM02 Fly yet?')
     sys.exit(1)
 
 def fastTravelTo(key):
@@ -24,13 +23,11 @@ def fastTravelTo(key):
         print('No such camp')
         sys.exit(1)
     targetDestination = fetchFromShelf(key)
-    # print('go to ' + key)
     pyautogui.typewrite('cd ' + targetDestination)
     pyautogui.typewrite(['enter'])
 
 def saveFastTravelPoint(key):
     # Add current directory and key to fastTravelData
-    # print('save ' + key)
     saveToShelf(key, os.getcwd())
     sys.exit(0)
 
