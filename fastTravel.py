@@ -13,6 +13,7 @@ import pyautogui
 
 key = ''
 command = ''
+fastTravelData = 'fastTravelData absolute directory here'
 
 def announceArgFailure():
     print('Invalid arguments supplied - are you sure you\'ve unlocked HM02 Fly yet?')
@@ -62,11 +63,19 @@ def fetchFromShelf(key):
     value = shelfFile[key]
     return value
 
+def listHelp(key):
+    print('How to use Fast Travel:\n\n' + 
+    'With no commands a just a key, jump to that camp\n' + 
+    'With the -set-camp command, save the current directory as a camp under a given name\n' + 
+    'With the -clear-camp command, remove the specified camp from your camp list\n' + 
+    'With the -list-camps command, see all currently registered camps\n')
+
 commands = {
     '': fastTravelTo,
     '-set-camp': saveFastTravelPoint,
     '-clear-camp': removeFastTravelPoint,
-    '-list-camps': listFastTravelPoints
+    '-list-camps': listFastTravelPoints,
+    '-help': listHelp
 }
 
 def executeCommand():
