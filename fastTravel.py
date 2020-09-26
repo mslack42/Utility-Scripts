@@ -6,6 +6,7 @@
 #  - delete a given key from the shelf
 #  - change directories by suppliying a key in the shelf
 #  - list all directories in the shelf
+#  - opens a given directory in file explorer (currently just in linux)
 
 import sys, os, shelve
 from tabulate import tabulate
@@ -63,9 +64,25 @@ def fetchFromShelf(key):
     value = shelfFile[key]
     return value
 
+def openDirectory(key):
+    if sys.platform == "linux" or sys.platform == "linux2":
+        if key == '':
+            os.system('gio open .')
+            return
+        elif not isInShelf(key):
+            print('No such camp')
+            sys.exit(1)
+        targetDestination = fetchFromShelf(key)
+        os.system('gio open "%s"' % targetDestination)
+    else
+        print('Not supported')
+        return
+
+
 def listHelp(key):
     print('How to use Fast Travel:\n\n' + 
     'With no commands a just a key, jump to that camp\n' + 
+     'With the -explore command, opens a given camp directory (or the current directory)\n' +
     'With the -set-camp command, save the current directory as a camp under a given name\n' + 
     'With the -clear-camp command, remove the specified camp from your camp list\n' + 
     'With the -list-camps command, see all currently registered camps\n')
@@ -75,6 +92,7 @@ commands = {
     '-set-camp': saveFastTravelPoint,
     '-clear-camp': removeFastTravelPoint,
     '-list-camps': listFastTravelPoints,
+    '-explore': openDirectory,
     '-help': listHelp
 }
 
