@@ -43,6 +43,7 @@ display_usage () {
     echo "      --set-camp, -s:   save the current directory under the specified CAMP_NAME"
     echo "      --list-camps, -l: lists all the available camps"
     echo "      --clear-camp, -c: removes CAMP_NAME from the list of available camps."
+    echo "      --get-camp, -g: returns specified camp (if it exists)"
     echo "Specifying a CAMP_NAME alone has the effect of changing directory to that camp."
 }
 
@@ -94,7 +95,7 @@ parse_arguments () {
             --help|-h)
                 help
                 ;;
-            --set-camp|--list-camps|--clear-camp|-s|-l|-c)
+            --set-camp|--list-camps|--clear-camp|--get-camp|-s|-l|-c|-g)
                 if [ -z $Command ]
                 then 
                     Command="$arg"
@@ -131,6 +132,9 @@ map_command_argument_to_command () {
         --clear-camp|-c)
             Command="--clear-camp"
             ;;
+        --get-camp|-g)
+            Command="--get-camp"
+            ;;
         *)
             Command="--go-to-camp"
             ;;
@@ -148,6 +152,9 @@ execute_command () {
             ;;
         --clear-camp)
             clear_camp "$Destination"
+            ;;
+        --get-camp)
+            get_camp "$Destination"
             ;;
         --go-to-camp)
             go_to_camp "$Destination"
@@ -180,6 +187,16 @@ clear_camp () {
     rm -f "$StoreLocation${1}"
 }
 
+# Return directory  camp
+get_camp () {
+    if [ ! -f "$StoreLocation${1}" ]
+    then
+        kill -INT $$
+    fi
+    StoredPath=`cat $StoreLocation${1}`
+    echo $StoredPath
+}
+
 # Change directory to camp
 go_to_camp () {
     if [ ! -f "$StoreLocation${1}" ]
@@ -187,7 +204,6 @@ go_to_camp () {
         fail_and_display_error "No such camp exists"
     fi
     StoredPath=`cat $StoreLocation${1}`
-    echo $StoredPath
     cd $StoredPath
 }
 
