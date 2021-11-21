@@ -16,3 +16,9 @@ The Python script requires certain libraries to be installed - I remember extra 
 
 The Bash script only requires you to ensure it is sourced when run (it can't change directories otherwise)
  - The Bash script even includes installation guidance! I'm learning.
+
+Further usage:
+The -g option can be called from other scripts, so for a command to open file explorer (at a given camp) you could define the following in your bash.rc...
+exp () {
+        xdg-open $(ft -g $1)
+}
